@@ -1,0 +1,11 @@
+---
+# defaults file for ansible-rsyslog
+configure_rsyslog: false  #defines if rsyslog should be reconfigured
+pri_domain_name: example.org  #defines primary domain name...define here or globally in group_vars/all
+syslog_servers: []  #defines remote syslog servers...define here or globally in group_vars/all
+#  - name: 'graylog.{{ pri_domain_name }}'
+#    proto: udp
+#    port: 514
+#  - name: 'logstash.{{ pri_domain_name }}'
+#    proto: tcp
+#    port: 514
