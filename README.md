@@ -6,14 +6,18 @@ Installs rsyslog (Configurable and remote syslog server ready)
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
 
 ````
+---
+# defaults file for ansible-rsyslog
 configure_rsyslog: false  #defines if rsyslog should be reconfigured
 pri_domain_name: example.org  #defines primary domain name...define here or globally in group_vars/all
+rsyslog_allow_tcp: false  #defines if rsyslog should be configured to listen on tcp/514
+rsyslog_allow_udp: false  #defines if rsyslog should be configured to listen on udp/514
 syslog_servers: []  #defines remote syslog servers...define here or globally in group_vars/all
 #  - name: 'graylog.{{ pri_domain_name }}'
 #    proto: udp
@@ -21,21 +25,37 @@ syslog_servers: []  #defines remote syslog servers...define here or globally in 
 #  - name: 'logstash.{{ pri_domain_name }}'
 #    proto: tcp
 #    port: 514
+#  - name: localhost  #good for redirecting back itself..ex. logstash running on tcp/udp 10514...to get around logstash running on ports < 1024
+#    proto: tcp
+#    port: 10514
 ````
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: mrlesmithjr.rsyslog }
+#### GitHub
+````
+- hosts: all
+  become: true
+  vars:
+  roles:
+    - ansible-rsyslog
+  tasks:
+````
+#### Galaxy
+````
+- hosts: all
+  become: true
+  vars:
+  roles:
+    - mrlesmithjr.syslog
+  tasks:
+````
 
 License
 -------
