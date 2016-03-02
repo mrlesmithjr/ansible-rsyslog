@@ -27,3 +27,7 @@
     group: root
   notify: restart rsyslog
   when: configure_rsyslog is defined and configure_rsyslog
+
+- name: redhat_rsyslog | enabling rsyslog service
+  service:
+    enabled: yes
