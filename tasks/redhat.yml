@@ -30,4 +30,5 @@
 
 - name: redhat_rsyslog | enabling rsyslog service
   service:
+    name: "rsyslog"
     enabled: yes
