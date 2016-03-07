@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - python-dnf  #preparing for using dnf instead of yum
+#    - python-dnf  #preparing for using dnf instead of yum
     - rsyslog
   when: >
         ansible_distribution != "Fedora"
