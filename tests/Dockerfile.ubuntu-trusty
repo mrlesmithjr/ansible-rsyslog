@@ -5,4 +5,6 @@ RUN apt-get update && \
     libssl-dev python-dev python-minimal python-pip python-setuptools \
     python-virtualenv
 
-RUN pip install --upgrade pip setuptools && pip install ansible ansible-lint
+RUN pip install --upgrade pip setuptools && pip install ansible ansible-lint ipaddress
+
+COPY .ansible-lint /
