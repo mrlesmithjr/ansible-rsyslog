@@ -29,8 +29,6 @@ rsyslog_templates: []
 #  - name: 'logstash'
 #    template: '<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %msg%\n'
 
-GRAYLOGRFC5424,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msg%\n"
-
 # defines remote syslog servers
 rsyslog_servers: []
 #  - name: 'graylog.{{ rsyslog_pri_domain_name }}'
