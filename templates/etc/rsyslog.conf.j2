@@ -33,11 +33,19 @@ $KLogPermitNonKernelFacility on
 #### GLOBAL DIRECTIVES ####
 ###########################
 
+{% if (rsyslog_highprecision is defined and not rsyslog_highprecision) %}
 #
 # Use traditional timestamp format.
 # To enable high precision timestamps, comment out the following line.
 #
 $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+{% elif rsyslog_highprecision is defined and rsyslog_highprecision %}
+#
+# Use high precision timestamp format.
+# To enable traditional low-precision timestamps, uncomment the following line.
+#
+#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+{% endif %}
 
 # Filter duplicated messages
 $RepeatedMsgReduction on
