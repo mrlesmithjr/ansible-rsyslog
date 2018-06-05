@@ -3,7 +3,7 @@
 {% if rsyslog_templates is defined %}
 #server-specific templates
 {%   for item in rsyslog_templates %}
-$template {{ item.name }} "{{ item.tamplate }}"
+$template {{ item.name }} "{{ item.template }}"
 {%   endfor %}
 {% endif %}
 
