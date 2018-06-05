@@ -22,11 +22,21 @@ rsyslog_allow_udp: false
 # sets the UDP port rsyslog should listen on if UDP is enabled. 514 is the IANA assigned port
 rsyslog_udp_port: 514
 
+# defines specialized templates for remote syslog servers
+rsyslog_templates: []
+#  - name: 'GRAYLOGRFC5424'
+#    template: '<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msg%\n'
+#  - name: 'logstash'
+#    template: '<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %msg%\n'
+
+GRAYLOGRFC5424,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msg%\n"
+
 # defines remote syslog servers
 rsyslog_servers: []
 #  - name: 'graylog.{{ rsyslog_pri_domain_name }}'
 #    proto: udp
 #    port: 514
+#    template: 'GRAYLOGRFC5424' #optional
 #  - name: 'logstash.{{ rsyslog_pri_domain_name }}'
 #    proto: tcp
 #    port: 514

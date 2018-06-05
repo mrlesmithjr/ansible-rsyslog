@@ -1,13 +1,20 @@
 {{ ansible_managed|comment }}
 
+{% if rsyslog_templates is defined %}
+#server-specific templates
+{%   for item in rsyslog_templates %}
+$template {{ item.name }} "{{ item.tamplate }}"
+{%   endfor %}
+{% endif %}
+
 # Set our initial redirects here to ensure we catch everything
 {% if rsyslog_servers is defined %}
 {%   for item in rsyslog_servers %}
 {%     if item.proto == "tcp" %}
-*.* @@{{ item.name }}:{{ item.port }}
+*.* @@{{ item.name }}:{{ item.port }}{% if item.template is defined %};{{item.template}}{% endif %}
 {%     endif %}
 {%     if item.proto == "udp" %}
-*.* @{{ item.name }}:{{ item.port }}
+*.* @{{ item.name }}:{{ item.port }}{% if item.template is defined %};{{item.template}}{% endif %}
 {%     endif %}
 {%   endfor %}
 {% endif %}
