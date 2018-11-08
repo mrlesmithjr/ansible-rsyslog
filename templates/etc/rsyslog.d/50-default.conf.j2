@@ -3,11 +3,16 @@
 # Set our initial redirects here to ensure we catch everything
 {% if rsyslog_servers is defined %}
 {%   for item in rsyslog_servers %}
+{%     selector = item.selectors|default(['*.*'])|join(';') %}
 {%     if item.proto == "tcp" %}
-*.* @@{{ item.name }}:{{ item.port }}
+{%       prefix = '@@' %}
+{%     elif item.proto == "udp" %}
+{%       prefix = '@' %}
+{%     else %}
+{%       continue %}
 {%     endif %}
-{%     if item.proto == "udp" %}
-*.* @{{ item.name }}:{{ item.port }}
+{%     if item.name|length>0 and item.port|int>0 %}
+{{ selector }} {{ prefix }}{{ item.name }}:{{ item.port }}
 {%     endif %}
 {%   endfor %}
 {% endif %}

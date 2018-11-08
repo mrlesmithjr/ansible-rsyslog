@@ -27,9 +27,15 @@ rsyslog_servers: []
 #  - name: 'graylog.{{ rsyslog_pri_domain_name }}'
 #    proto: udp
 #    port: 514
+#    selectors:
+#      - 'authpriv.*'
 #  - name: 'logstash.{{ rsyslog_pri_domain_name }}'
 #    proto: tcp
 #    port: 514
+#    selectors:
+#      - '*.warn'
 #  - name: localhost  #good for redirecting back itself..ex. logstash running on tcp/udp 10514...to get around logstash running on ports < 1024
 #    proto: tcp
 #    port: 10514
+#    selectors:
+#      - '*.*'
