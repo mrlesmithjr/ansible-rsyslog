@@ -1,83 +1,25 @@
 {{ ansible_managed|comment }}
 
 # Set our initial redirects here to ensure we catch everything
-{% if rsyslog_servers is defined %}
-{%   for item in rsyslog_servers %}
-{%     selector = item.selectors|default(['*.*'])|join(';') %}
-{%     if item.proto == "tcp" %}
+{% for item in rsyslog_defaults %}
+{%   if item.name|length>0 %}
+{%     selector = [item.selectors|default('*.*')]|flatten|join(';') %}
+{%     if item.proto == "nosync" %}
+{%       prefix = '-' %}
+{%     elif item.proto == 'pipe' %}
+{%       prefix = '|' %}
+{%     elif item.proto == 'tcp' %}
 {%       prefix = '@@' %}
-{%     elif item.proto == "udp" %}
+{%     elif item.proto == 'udp' %}
 {%       prefix = '@' %}
 {%     else %}
-{%       continue %}
+{%       prefix = '' %}
 {%     endif %}
-{%     if item.name|length>0 and item.port|int>0 %}
-{{ selector }} {{ prefix }}{{ item.name }}:{{ item.port }}
+{%     if item.port|int>0 %}
+{%       suffix = ':' & item.port %}
+{%     else %}
+{%       suffix = '' %}
 {%     endif %}
+{{ selector }} {{ prefix }}{{ item.name }}{{ suffix }}
 {%   endfor %}
 {% endif %}
-
-#
-# First some standard log files.  Log by facility.
-#
-auth,authpriv.*			/var/log/auth.log
-*.*;auth,authpriv.none 		-/var/log/syslog
-#cron.*				/var/log/cron.log
-#daemon.*      			-/var/log/daemon.log
-kern.* 				-/var/log/kern.log
-#lpr.* 				-/var/log/lpr.log
-mail.* 				-/var/log/mail.log
-#user.*				-/var/log/user.log
-
-#
-# Logging for the mail system.  Split it up so that
-# it is easy to write scripts to parse these files.
-#
-#mail.info     			-/var/log/mail.info
-#mail.warn     			-/var/log/mail.warn
-mail.err       			/var/log/mail.err
-
-#
-# Logging for INN news system.
-#
-news.crit      			/var/log/news/news.crit
-news.err       			/var/log/news/news.err
-news.notice    			-/var/log/news/news.notice
-
-#
-# Some "catch-all" log files.
-#
-#*.=debug;\
-#      	auth,authpriv.none;\
-#      	news.none;mail.none    	-/var/log/debug
-#*.=info;*.=notice;*.=warn;\
-#      	auth,authpriv.none;\
-#      	cron,daemon.none;\
-#      	mail,news.none 		-/var/log/messages
-
-#
-# Emergencies are sent to everybody logged in.
-#
-*.emerg                                :omusrmsg:*
-
-#
-# I like to have messages displayed on the console, but only on a virtual
-# console I usually leave idle.
-#
-#daemon,mail.*;\
-#      	news.=crit;news.=err;news.=notice;\
-#      	*.=debug;*.=info;\
-#      	*.=notice;*.=warn      	/dev/tty8
-
-# The named pipe /dev/xconsole is for the `xconsole' utility.  To use it,
-# you must invoke `xconsole' with the `-file' option:
-#
-#    $ xconsole -file /dev/xconsole [...]
-#
-# NOTE: adjust the list below, or you'll go crazy if you have a reasonably
-#      busy site..
-#
-daemon.*;mail.*;\
-       	news.err;\
-       	*.=debug;*.=info;\
-       	*.=notice;*.=warn      	|/dev/xconsole
