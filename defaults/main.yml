@@ -84,7 +84,7 @@ rsyslog_localfiles:
     selectors: 'news.crit'
   - name: '/var/log/news/news.err'
     selectors: 'news.err'
-  - name: '/var/log/news/news.notice
+  - name: '/var/log/news/news.notice'
     proto: 'nosync'
     selectors: 'news.notice'
 #
