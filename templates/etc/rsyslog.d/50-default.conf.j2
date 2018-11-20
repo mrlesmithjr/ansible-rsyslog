@@ -4,13 +4,14 @@
 {%- for item in rsyslog_defaults -%}
 {%-   if item.name|length>0 -%}
 {%-     set selector = [item.selectors|default('*.*')]|flatten|join(';') -%}
-{%-     if item.proto == 'nosync' -%}
+{%-     set proto = item.proto|default('') -%}
+{%-     if proto == 'nosync' -%}
 {%-       set prefix = '-' -%}
-{%-     elif item.proto == 'pipe' -%}
+{%-     elif proto == 'pipe' -%}
 {%-       set prefix = '|' -%}
-{%-     elif item.proto == 'tcp' -%}
+{%-     elif proto == 'tcp' -%}
 {%-       set prefix = '@@' -%}
-{%-     elif item.proto == 'udp' -%}
+{%-     elif proto == 'udp' -%}
 {%-       set prefix = '@' -%}
 {%-     else -%}
 {%-       set prefix = '' -%}
