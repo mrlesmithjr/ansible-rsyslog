@@ -1,25 +1,25 @@
 {{ ansible_managed|comment }}
 
 # Set our initial redirects here to ensure we catch everything
-{% for item in rsyslog_defaults %}
-{%   if item.name|length>0 %}
-{%     selector = [item.selectors|default('*.*')]|flatten|join(';') %}
-{%     if item.proto == "nosync" %}
-{%       prefix = '-' %}
-{%     elif item.proto == 'pipe' %}
-{%       prefix = '|' %}
-{%     elif item.proto == 'tcp' %}
-{%       prefix = '@@' %}
-{%     elif item.proto == 'udp' %}
-{%       prefix = '@' %}
-{%     else %}
-{%       prefix = '' %}
-{%     endif %}
-{%     if item.port|int>0 %}
-{%       suffix = ':' & item.port %}
-{%     else %}
-{%       suffix = '' %}
-{%     endif %}
+{%- for item in rsyslog_defaults -%}
+{%-   if item.name|length>0 -%}
+{%-     set selector = [item.selectors|default('*.*')]|flatten|join(';') -%}
+{%-     if item.proto == 'nosync' -%}
+{%-       set prefix = '-' -%}
+{%-     elif item.proto == 'pipe' -%}
+{%-       set prefix = '|' -%}
+{%-     elif item.proto == 'tcp' -%}
+{%-       set prefix = '@@' -%}
+{%-     elif item.proto == 'udp' -%}
+{%-       set prefix = '@' -%}
+{%-     else -%}
+{%-       set prefix = '' -%}
+{%-     endif -%}
+{%-     if item.port|default(0)|int>0 -%}
+{%-       set suffix = ':' + item.port -%}
+{%-     else -%}
+{%-       set suffix = '' -%}
+{%-     endif %}
 {{ selector }} {{ prefix }}{{ item.name }}{{ suffix }}
-{%   endif %}
-{% endfor %}
+{%-   endif -%}
+{%- endfor -%}
