@@ -17,7 +17,7 @@
 {%-       set prefix = '' -%}
 {%-     endif -%}
 {%-     if item.port|default(0)|int>0 -%}
-{%-       set suffix = ':' + item.port -%}
+{%-       set suffix = ':' + item.port|string -%}
 {%-     else -%}
 {%-       set suffix = '' -%}
 {%-     endif %}
