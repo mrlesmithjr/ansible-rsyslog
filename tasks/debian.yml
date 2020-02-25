@@ -4,6 +4,8 @@
     name: rsyslog
     state: present
   become: true
+  register: result
+  until: result is successful
 
 - name: debian | configuring rsyslog.conf
   template:
@@ -15,9 +17,9 @@
   become: true
   notify:
     - restart rsyslog
-  when: >
-        rsyslog_config is defined and
-        rsyslog_config
+  when:
+    - rsyslog_config is defined
+    - rsyslog_config|bool
 
 - name: debian | configuring rsyslog
   template:
@@ -29,6 +31,6 @@
   become: true
   notify:
     - restart rsyslog
-  when: >
-        rsyslog_config is defined and
-        rsyslog_config
+  when:
+    - rsyslog_config is defined
+    - rsyslog_config|bool
